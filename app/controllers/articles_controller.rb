@@ -47,6 +47,17 @@ class ArticlesController < ApplicationController
     redirect_to articles_path
   end
 
+  def search
+    if params[:search].blank?
+      redirect_to users_path
+    else
+
+    @parameter = params[:search].downcase
+    @articles = Article.all.where('lower(title) like :search', search: "%#{@parameter}").paginate(page: params[:page])
+    render :index
+    end
+  end
+
   private
   def set_article
     @article = Article.find(params[:id])
