@@ -1,0 +1,12 @@
+<div class="flickr_pagination">
+  <%= will_paginate @users, :container => false %>
+</div>
+
+<div class="container">
+  <% @users.each do |user| %>
+  <%= render user %>
+  <% end %>
+</div>
+<div class="flickr_pagination">
+  <%= will_paginate @users, :container => false %>
+</div>
