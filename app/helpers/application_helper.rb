@@ -9,15 +9,17 @@ module ApplicationHelper
   def require_user
     if !logged_in?
       flash[:notice] = "Log in first"
-      redirect_to login_path
+      error_403
     end
   end
 
   def require_admin
     unless current_user.admin?
-      flash[:alert] = 'Method Not Allowed'
-      redirect_to url_for(:back)
+      error_403
     end
+  end
 
+  def error_403
+    render inline: "<h1>403 Forbidden</h1>", status: 403
   end
 end

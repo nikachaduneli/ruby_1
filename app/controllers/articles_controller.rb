@@ -1,7 +1,7 @@
 class ArticlesController < ApplicationController
   before_action :set_article, only: [:show, :edit, :destroy, :update]
   before_action :require_user, except: [:show, :index]
-  before_action :require_same_user_or_admin, only: [:destroy, :edit, :update]
+  before_action :require_same_user, only: [:destroy, :edit, :update]
 
   def show
   end
@@ -66,10 +66,9 @@ class ArticlesController < ApplicationController
      params.require(:article).permit(:title, :description, images: [])
   end
 
-  def require_same_user_or_admin
-    if current_user != @article.user && !current_user.admin?
-      flash[:alert] = 'Method Not Allowed'
-      redirect_to @article
+  def require_same_user
+    if current_user != @article.user
+      error_403
     end
   end
 end

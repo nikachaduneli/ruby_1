@@ -1,8 +1,8 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [ :show, :edit, :update, :destroy ]
   before_action :require_user,  except: [:index, :show, :new, :create]
-  before_action :require_same_user, only: [:edit, :update, :destroy]
-  before_action :require_admin, only: [:edit, :update, :destroy]
+  before_action :require_same_user, only: [:edit, :update]
+  before_action :require_same_user_or_admin, only: [:destroy]
 
   # GET /users or /users.json
   def index
@@ -64,9 +64,13 @@ class UsersController < ApplicationController
 
   def require_same_user
     if current_user != @user
-      flash[:alert] = 'Method Not Allowed'
-      redirect_to @user
+      error_403
     end
   end
 
+def require_same_user_or_admin
+    if current_user != @user && !current_user.admin?
+      error_403
+    end
+  end
 end
