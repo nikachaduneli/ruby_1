@@ -63,7 +63,7 @@ class ArticlesController < ApplicationController
     @article = Article.find(params[:id])
   end
   def article_params
-     params.require(:article).permit(:title, :description, images: [])
+     params.require(:article).permit(:title, :description, category_ids: [], images: [])
   end
 
   def require_same_user
